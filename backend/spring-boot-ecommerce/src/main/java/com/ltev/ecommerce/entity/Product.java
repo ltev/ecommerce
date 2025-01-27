@@ -1,8 +1,7 @@
 package com.ltev.ecommerce.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -11,8 +10,12 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "product")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
+@ToString
 public class Product {
 
     @Id
