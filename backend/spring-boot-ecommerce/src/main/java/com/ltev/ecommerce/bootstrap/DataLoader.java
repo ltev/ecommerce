@@ -35,6 +35,7 @@ public class DataLoader implements CommandLineRunner {
                 .unitPrice(new BigDecimal("15.99"))
                 .active(true)
                 .unitsInStock(12)
+                .imageUrl("images/products/around-the-world.jpg")
                 .build();
 
         Product book2 = Product.builder()
@@ -44,6 +45,7 @@ public class DataLoader implements CommandLineRunner {
                 .unitPrice(new BigDecimal("15.99"))
                 .active(true)
                 .unitsInStock(12)
+                .imageUrl("images/products/around-the-world.jpg")
                 .build();
 
         productRepository.saveAll(List.of(book1, book2));
