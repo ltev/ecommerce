@@ -20,6 +20,11 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        boolean loadData = false;
+
+        if (loadData == false) {
+            return;
+        }
 
         ProductCategory laptop = new ProductCategory("laptop");
         ProductCategory tv = new ProductCategory("tv");
