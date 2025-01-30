@@ -14,7 +14,9 @@ export class ProductListComponent implements OnInit {
 
   products: Product[] = [];
   defaultCategoryId = 1;
+  defaultCategoryName = 'Books';
   currentCategoryId: number = this.defaultCategoryId;
+  currentCategoryName: string = this.defaultCategoryName;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute) {}      // current active route that loaded the component
@@ -32,8 +34,10 @@ export class ProductListComponent implements OnInit {
     if (hasCategoryId) {
       // '+' converts string to number
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id')!;    // '!' non null assertion operator
+      this.currentCategoryName = this.route.snapshot.paramMap.get('categoryName')!;
     } else {
       this.currentCategoryId = this.defaultCategoryId;
+      this.currentCategoryName = this.defaultCategoryName;
     }
 
     this.productService.getProductList(this.currentCategoryId).subscribe(
