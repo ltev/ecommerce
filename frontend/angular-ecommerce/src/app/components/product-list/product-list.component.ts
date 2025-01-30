@@ -17,9 +17,7 @@ export class ProductListComponent implements OnInit {
   currentCategoryId: number = this.defaultCategoryId;
 
   constructor(private productService: ProductService,
-              private route: ActivatedRoute) {      // current active route that loaded the component
-    
-  }
+              private route: ActivatedRoute) {}      // current active route that loaded the component
   
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
@@ -42,6 +40,6 @@ export class ProductListComponent implements OnInit {
       data => {
         this.products = data;
       }
-    )
+    );
   }
 }
