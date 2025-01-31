@@ -12,11 +12,13 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProductListComponent implements OnInit {
 
-  products: Product[] = [];
   defaultCategoryId = 1;
   defaultCategoryName = 'Books';
+
+  products: Product[] = [];
   currentCategoryId: number = this.defaultCategoryId;
   currentCategoryName: string = this.defaultCategoryName;
+  searchMode: boolean = false;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute) {}      // current active route that loaded the component
@@ -28,8 +30,8 @@ export class ProductListComponent implements OnInit {
   }
 
   listProducts() {
-    const searchMode: boolean = this.route.snapshot.paramMap.has('keyword');    // search keyword parameter
-    if (searchMode) {
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');    // search keyword parameter
+    if (this.searchMode) {
       this.handleSearchProducts();
     } else {
       this.handleListProducts();
