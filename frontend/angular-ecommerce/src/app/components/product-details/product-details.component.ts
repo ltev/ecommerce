@@ -12,14 +12,14 @@ import { Product } from '../../common/product';
 })
 export class ProductDetailsComponent implements OnInit {
 
-  product: Product | undefined;
+  product!: Product;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
-    this.handleProductDetails()
+      this.handleProductDetails()
     });
   }
 

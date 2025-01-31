@@ -16,9 +16,9 @@ export class ProductListComponent implements OnInit {
   defaultCategoryName = 'Books';
 
   products: Product[] = [];
-  currentCategoryId: number = this.defaultCategoryId;
-  currentCategoryName: string = this.defaultCategoryName;
-  searchMode: boolean = false;
+  currentCategoryId!: number;
+  currentCategoryName!: string;
+  searchMode!: boolean;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute) {}      // current active route that loaded the component
