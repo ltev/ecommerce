@@ -1,6 +1,7 @@
 package com.ltev.ecommerce.dao;
 
 import com.ltev.ecommerce.entity.Product;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +15,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     /**
      * Spring Data REST endpoint: /api/products/search/findByCategoryId?id=:id
      */
-    List<Product> findByCategoryId(@Param("id") Long id, Pageable pageable);
+    Page<Product> findByCategoryId(@Param("id") Long id, Pageable pageable);
 
     List<Product> findByNameContaining(@Param("name") String name, Pageable pageable);
 }

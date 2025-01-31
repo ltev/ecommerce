@@ -15,10 +15,16 @@ export class ProductListComponent implements OnInit {
   defaultCategoryId = 1;
   defaultCategoryName = 'Books';
 
-  products: Product[] = [];
+  products!: Product[];
   currentCategoryId!: number;
+  previousCategoryId = -1;
   currentCategoryName!: string;
   searchMode!: boolean;
+
+  // pagination properties
+  pageNumber: number = 1;
+  pageSize: number = 12;
+  pageTotalElements!: number;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute) {}      // current active route that loaded the component
@@ -60,12 +66,24 @@ export class ProductListComponent implements OnInit {
     } else {
       this.currentCategoryId = this.defaultCategoryId;
       this.currentCategoryName = this.defaultCategoryName;
+      this.previousCategoryId = -1;
     }
 
-    this.productService.getProductList(this.currentCategoryId).subscribe(
-      data => {
-        this.products = data;
-      }
-    );
+    // angular will reuse a component if it is currently being viewed
+    // reset pageNumber to default 1 when different category
+    if (this.currentCategoryId != this.previousCategoryId) {
+      this.pageNumber = 1;
+      this.previousCategoryId = this.currentCategoryId;
+    }
+
+    // in Angular pages are 1-based, in Spring Data REST 0-based
+    this.productService.getProductListPaginate(this.currentCategoryId, this.pageNumber - 1, this.pageSize)
+      .subscribe(data => {
+        this.products = data._embedded.products;
+        this.pageNumber = data.page.number + 1;
+        this.pageSize = data.page.size;
+        this.pageTotalElements = data.page.totalElements;
+      });
+    console.log(`Page: ${this.pageNumber}, Total elements: ${this.pageTotalElements}`);
   }
 }
