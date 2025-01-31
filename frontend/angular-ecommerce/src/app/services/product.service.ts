@@ -20,14 +20,25 @@ export class ProductService {
     // build URL base on category id
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${categoryId}&size=${this.sizeLimit}`;
 
-    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
-      map(response => response._embedded.products)                    // maps the JSON data from Spring Data REST to Product array
-    );
+    return this.getProducts(searchUrl);
   }
 
   getProductCategories(): Observable<ProductCategory[]> {
     return this.httpClient.get<GetResponseProductCategory>(this.categoryUrl).pipe(
       map(response => response._embedded.productCategory)
+    );
+  }
+
+  searchProducts(keyword: string): Observable<Product[]> {
+    // build URL base on search keyword
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${keyword}&size=${this.sizeLimit}`;
+
+    return this.getProducts(searchUrl);
+  }
+
+  private getProducts(searchUrl: string): Observable<Product[]> {
+    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
+      map(response => response._embedded.products)                    // maps the JSON data from Spring Data REST to Product array
     );
   }
 }
