@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-product-list',
   standalone: false,
-  
+
   templateUrl: './product-list-grid.component.html',
   styleUrl: './product-list.component.css'
 })
@@ -20,6 +20,7 @@ export class ProductListComponent implements OnInit {
   previousCategoryId = -1;
   currentCategoryName!: string;
   searchMode!: boolean;
+  previousKeyword: string = '';
 
   // pagination properties
   pageNumber: number = 1;
@@ -27,8 +28,8 @@ export class ProductListComponent implements OnInit {
   pageTotalElements!: number;
 
   constructor(private productService: ProductService,
-              private route: ActivatedRoute) {}      // current active route that loaded the component
-  
+    private route: ActivatedRoute) { }      // current active route that loaded the component
+
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
       this.listProducts();
@@ -47,12 +48,13 @@ export class ProductListComponent implements OnInit {
   handleSearchProducts() {
     const keyword: string = this.route.snapshot.paramMap.get('keyword')!;
 
+    if (keyword != this.previousKeyword) {
+      this.pageNumber = 1;
+      this.previousKeyword = keyword;
+    }
+
     // search for the products using keyword
-    this.productService.searchProducts(keyword).subscribe(
-      data => {
-        this.products = data;
-      }
-    );
+    this.productService.searchProductsPagination(keyword, this.pageNumber - 1, this.pageSize).subscribe(this.processResult());
   }
 
   handleListProducts() {
@@ -77,19 +79,22 @@ export class ProductListComponent implements OnInit {
     }
 
     // in Angular pages are 1-based, in Spring Data REST 0-based
-    this.productService.getProductListPaginate(this.currentCategoryId, this.pageNumber - 1, this.pageSize)
-      .subscribe(data => {
-        this.products = data._embedded.products;
-        this.pageNumber = data.page.number + 1;
-        this.pageSize = data.page.size;
-        this.pageTotalElements = data.page.totalElements;
-      });
+    this.productService.getProductListPaginate(this.currentCategoryId, this.pageNumber - 1, this.pageSize).subscribe(this.processResult());
     console.log(`Page: ${this.pageNumber}, Total elements: ${this.pageTotalElements}`);
   }
 
   updatePageSize(pageSize: number) {
-      this.pageSize = pageSize;
-      this.pageNumber = 1;
-      this.listProducts();
+    this.pageSize = pageSize;
+    this.pageNumber = 1;
+    this.listProducts();
+  }
+
+  private processResult() {
+    return (data: any) => {
+      this.products = data._embedded.products;
+      this.pageNumber = data.page.number + 1;
+      this.pageSize = data.page.size;
+      this.pageTotalElements = data.page.totalElements;
     }
+  }
 }

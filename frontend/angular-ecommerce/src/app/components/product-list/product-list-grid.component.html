@@ -45,16 +45,20 @@
           <div class="col-md-6">
             <div class="row">
 
-              <div class="col-md-9"style="padding-left: 30%">
-                <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" [collectionSize]="pageTotalElements"
-                  (pageChange)="listProducts()" />
+              <div class="col-md-9" style="padding-left: 20%">
+                <ngb-pagination [(page)]="pageNumber" 
+                                [pageSize]="pageSize" 
+                                [collectionSize]="pageTotalElements"
+                                [maxSize]="5"
+                                [boundaryLinks]="true"
+                                (pageChange)="listProducts()" />
               </div>
 
               <div class="col-md-3" style="text-align: right">
                 <span class="mr-2">Page Size  </span>
 
                 <select #pageSelect (change)="updatePageSize(+pageSelect.value)">
-                  <option *ngFor="let value of [5, 10, 20, 50]" [selected]="value == pageSize">
+                  <option *ngFor="let value of [3, 5, 10, 20, 50]" [selected]="value == pageSize">
                     {{ value }}
                   </option>
                 </select>
