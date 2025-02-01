@@ -17,7 +17,7 @@
         <div *ngFor="let product of products" class="col-md-3">
 
           <div class="product-box">
-            
+
             <div>
               <a routerLink="/products/{{ product.id }}">
                 <img src="{{ product.imageUrl }}" class="img-responsive">
@@ -37,23 +37,34 @@
       </div>
 
       <!-- footer -->
-       <div class="footer-pagination">
+      <div class="footer-pagination">
         <div class="row">
-          <div class="col-md-6"></div>
-            
-          <div class="col-md-6">
-            <div class="col-md-9" style="padding-left: 30%">
 
-              <ngb-pagination [(page)]="pageNumber"
-                              [pageSize]="pageSize"
-                              [collectionSize]="pageTotalElements"
-                              (pageChange)="listProducts()" />
+          <div class="col-md-6"></div>
+
+          <div class="col-md-6">
+            <div class="row">
+
+              <div class="col-md-9"style="padding-left: 30%">
+                <ngb-pagination [(page)]="pageNumber" [pageSize]="pageSize" [collectionSize]="pageTotalElements"
+                  (pageChange)="listProducts()" />
+              </div>
+
+              <div class="col-md-3" style="text-align: right">
+                <span class="mr-2">Page Size  </span>
+
+                <select #pageSelect (change)="updatePageSize(+pageSelect.value)">
+                  <option *ngFor="let value of [5, 10, 20, 50]" [selected]="value == pageSize">
+                    {{ value }}
+                  </option>
+                </select>
+              </div>
 
             </div>
           </div>
 
         </div>
-       </div>
+      </div>
 
     </div>
   </div>
