@@ -16,13 +16,7 @@ export class CartService {
 
   addToCart(cartItem: CartItem) {
     // check if already in cart
-    let existingCartItem: CartItem | undefined = undefined;
-
-    for (let tempCartItem of this.cartItems) {
-      if (tempCartItem.id == cartItem.id) {
-        existingCartItem = tempCartItem;
-      }
-    }
+    let existingCartItem: CartItem | undefined = this.cartItems.find(tempCartItem => tempCartItem.id == cartItem.id);
 
     // check if found
     if (existingCartItem != undefined) {
@@ -43,6 +37,9 @@ export class CartService {
       totalPriceValue += cartItem.quantity * cartItem.unitPrice;
       totalQuantityValue += cartItem.quantity;
     }
+
+    // fixed 2 decimal places
+    totalPriceValue = Number(totalPriceValue.toFixed(2));
 
     // publish new values. All subscribers will receive the new data
     // .next(...) - publish / send event
