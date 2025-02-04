@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../common/product';
 import { ActivatedRoute } from '@angular/router';
+import { CartService } from '../../services/cart.service';
+import { CartItem } from '../../common/cart-item';
 
 @Component({
   selector: 'app-product-list',
@@ -20,7 +22,7 @@ export class ProductListComponent implements OnInit {
   previousCategoryId = -1;
   currentCategoryName!: string;
   searchMode!: boolean;
-  previousKeyword: string = '';
+  previousKeyword: string | null = null;
 
   // pagination properties
   pageNumber: number = 1;
@@ -28,6 +30,7 @@ export class ProductListComponent implements OnInit {
   pageTotalElements!: number;
 
   constructor(private productService: ProductService,
+    private cartService: CartService,
     private route: ActivatedRoute) { }      // current active route that loaded the component
 
   ngOnInit(): void {
@@ -90,7 +93,11 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(product: Product) {
-    console.log(`Adding to cart: ${product.name}, ${product.unitPrice}`)
+    // log
+    console.log(`Adding to cart: ${product.name}, ${product.unitPrice}`);
+
+    // add to cartService
+    this.cartService.addToCart(new CartItem(product));
   }
 
   private processResult() {
