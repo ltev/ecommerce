@@ -1,8 +1,9 @@
 <div class="main-content">
     <div class="section-content section-content-p30">
         <div class="container-fluid">
-            
-            <table class="table table-bordered">
+
+            <!-- if cart not empty -->
+            <table *ngIf="cartItems.length > 0" class="table table-bordered">
                 <thead>
                     <tr>
                         <th width="20%">Product Image</th>
@@ -14,13 +15,35 @@
                     <tr *ngFor="let cartItem of cartItems ">
                         <td><img src="{{ cartItem.imageUrl }}" class="img-responsive" width="150px"></td>
                         <td>
-                             <p>{{ cartItem.name }}</p>
-                             <p>{{ cartItem.unitPrice | currency: 'USD' }}</p>
+                            <p>{{ cartItem.name }}</p>
+                            <p>{{ cartItem.unitPrice | currency: 'USD' }}</p>
                         </td>
                         <td>
-                            <div class="items">
-                                <label>Quantity:</label> {{ cartItem.quantity }}
+                            <div class="items text-center">
+                                <label>Quantity:</label>
+
+                                <div class="row no-gutters mt-2">
+                                    <div class="col">
+                                        <button (click)="decreaseQuantity(cartItem)" class="btn btn-primary btn-sm"
+                                            [ngClass]="cartItem.quantity == 0 ? 'disabled' : ''">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        {{ cartItem.quantity }}
+                                    </div>
+                                    <div class="col">
+                                        <button (click)="increaseQuantity(cartItem)" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
+
+                            <button (click)="removeItem(cartItem)" class="btn btn-danger btn-sm mt-2">
+                                Remove
+                            </button>
+
                             <p class="mt-2">Subtotal: {{ cartItem.quantity * cartItem.unitPrice | currency: 'USD' }}</p>
                         </td>
                     </tr>
@@ -35,6 +58,13 @@
                     </tr>
                 </tbody>
             </table>
+
+            <!-- if empty cart -->
+            <div class="d-flex justify-content-center">
+                <div *ngIf="cartItems.length == 0" class="alert alert-warning col-10 text-center">
+                    <strong>Your shopping cart is empty</strong>
+                </div>
+            </div>
 
         </div>
     </div>

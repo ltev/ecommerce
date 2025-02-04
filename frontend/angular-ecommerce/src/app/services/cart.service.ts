@@ -49,4 +49,12 @@ export class CartService {
     // log data
     console.log(`Cart data: totalValue=${totalPriceValue}, totalQuantity=${totalQuantityValue}`);
   }
+
+  removeItem(cartItem: CartItem) {
+    let itemIdx = this.cartItems.findIndex(tempCartItem => tempCartItem.id == cartItem.id);
+    if (itemIdx != -1) {
+      this.cartItems.splice(itemIdx, 1);
+      this.computeCartTotals();
+    }
+  }
 }
