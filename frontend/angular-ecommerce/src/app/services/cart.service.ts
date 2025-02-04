@@ -47,6 +47,6 @@ export class CartService {
     this.totalQuantity.next(totalQuantityValue);
 
     // log data
-    console.log(`Cart data: totalValue=${totalPriceValue.toFixed(2)}, totalQuantity=${totalQuantityValue}`);
+    console.log(`Cart data: totalValue=${totalPriceValue}, totalQuantity=${totalQuantityValue}`);
   }
 }
